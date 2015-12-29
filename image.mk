@@ -89,10 +89,10 @@ endif
 
 CDEFS += USE_FIX_QSPI_FLASH=$(FLASH_SPEED_MHZ)
 
-IMAGE_OPTION ?= -ff $(FLASH_FREQ)m -fm $(FLASH_MODE_NAME) -fs $(FLASH_SIZE_MBITS)m
+IMG_OPTION ?= -ff $(FLASH_FREQ)m -fm $(FLASH_MODE_NAME) -fs $(FLASH_SIZE_MBITS)m
 
-FIRMWARE1_ADDR := 0x00000
-FIRMWARE2_ADDR := 0x40000
+IMG1_ADDR := 0x00000
+IMG2_ADDR := 0x40000
 
 # Image rules
 define IMG_RULES
@@ -107,13 +107,13 @@ $$($(1).IMG): $$($(1).BIN)
 	@echo TARGET $(1) IMAGE
 	$(Q)mkdir -p $$(dir $$@)
 	$(Q)$(OBJCOPY) --only-section .lit4 -O binary $$< $$(call IMG_P,$(1)-addld)
-	$(Q)$(ESPTOOL) elf2image -o $$(dir $$@)$(1)- $(IMAGE_OPTION) $$<
-	$(Q)$(ESPTOOL) image_info $$(call IMG_P,$(1)-0x00000)
-	$(Q)cp -f $$(call IMG_P,$(1)-0x00000) $$@
+	$(Q)$(ESPTOOL) elf2image -o $$(dir $$@)$(1)- $(IMG_OPTION) $$<
+	$(Q)$(ESPTOOL) image_info $$(call IMG_P,$(1)-$(IMG1_ADDR))
+	$(Q)cp -f $$(call IMG_P,$(1)-$(IMG1_ADDR)) $$@
 	$(Q)dd if=$$(call IMG_P,$(1)-addld) >>$$@
 
 clean: clean.img.$(1)
 clean.img.$(1):
 	@echo TARGET $(1) IMG CLEAN
-	$(Q)rm -f $$($(1).IMG) $$(call IMG_P,$(1)-addld) $$(call IMG_P,$(1)-0x00000) $$(call IMG_P,$(1)-0x40000)
+	$(Q)rm -f $$($(1).IMG) $$(call IMG_P,$(1)-addld) $$(call IMG_P,$(1)-$(IMG1_ADDR)) $$(call IMG_P,$(1)-$(IMG2_ADDR))
 endef
