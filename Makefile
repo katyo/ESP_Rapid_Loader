@@ -29,9 +29,5 @@ rapid_loader.LDFLAGS += \
 	-u loader_flash_boot	\
   -Wl,-static
 
-DEPENDS_eagle.app.v6 = \
-                $(LD_FILE) \
-                $(LDDIR)/eagle.rom.addr.v6.ld
-
 $(eval $(call LIB_RULES,app/loader))
 $(eval $(call IMG_RULES,rapid_loader))
