@@ -15,6 +15,8 @@ app/loader.CFLAGS += -mlongcalls -mtext-section-literals
 app/loader.CDIRS += app/include
 
 rapid_loader.LIBS += app/loader
+rapid_loader.LDSCRIPTS += ld/eagle.app.v6.ld
+rapid_loader.LDSCRIPTS += ld/eagle.rom.addr.v6.ld
 
 rapid_loader.LDFLAGS += \
 	-nostdlib \

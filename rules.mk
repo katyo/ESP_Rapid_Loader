@@ -87,10 +87,10 @@ $(1).BIN := $$(call BIN_P,$(1))
 build: build.bin.$(1)
 build.bin.$(1): $$($(1).BIN)
 
-$$($(1).BIN): $$($(1).LIB)
+$$($(1).BIN): $$($(1).DEPLIBS) $$($(1).LDSCRIPTS)
 	@echo TARGET $(1) BIN
 	$(Q)mkdir -p $$(dir $$@)
-	$(Q)$(LD) $$(LDFLAGS) $$($(1).LDFLAGS) -Wl,-Map -Wl,$$(call MAP_P,$(1)) -Wl,--start-group $$^ -Wl,--end-group -o $$@
+	$(Q)$(LD) $$(LDFLAGS) $$($(1).LDFLAGS) -Wl,-Map -Wl,$$(call MAP_P,$(1)) -Wl,--start-group $$($(1).LIB) -Wl,--end-group -o $$@
 
 clean: clean.bin.$(1)
 clean.bin.$(1):
