@@ -45,7 +45,7 @@ $(1).DEP.$(2) := $$(patsubst $$(call SRC_P,$(1)/%,$(2)),$$(call DEP_P,$(1)/%.$(2
 $(1).DEP += $$($(1).DEP.$(2))
 
 $$(call OBJ_P,$(1)/%.$(2)): $$(call SRC_P,$(1)/%,$(2))
-	@echo TARGET $(1) DEP $$<
+	@echo TARGET $(1) CC $$<
 	$(Q)mkdir -p $$(dir $$@)
 	$(Q)$(CC) -MD -MF $$(call DEP_P,$(1)/$$*.$(2)) -c $$(CFLAGS) $$($(1).CFLAGS) -o $$@ $$<
 
