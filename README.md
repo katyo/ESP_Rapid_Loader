@@ -1,12 +1,14 @@
 ﻿# ESP8266 Rapid Loader V3
-Quick start and Support download 48 KB IRAM.
 
-Специальный загрузчик для ESP8266 для ускорения загрузки<br>
-и поддержки опции загрузки 48 килобайт IRAM.
+Special loader for ESP8266, which has been developed
+in order to quick start and support download up to 48 KB IRAM.
 
-[График загрузки ESP8266ex c Rapid Loader](https://raw.githubusercontent.com/pvvx/Rapid_Loader/master/ESP-01-StartSignals.gif)
+Forked from [pvvx:Rapid_Loader](//github.com/pvvx/Rapid_Loader)
 
-Лог загрузки:<br>
+[The diagram of loading ESP8266ex using Rapid Loader](./doc/ESP-01-StartSignals.gif)
+
+Loader output:
+
 ```
  ets Jan  8 2013,rst cause:2, boot mode:(3,6)
 
@@ -15,12 +17,17 @@ tail 8
 chksum 0x83
 csum 0x83
 ```
-где: 'chksum 0x83' это: <br>
-Первая цифра контрольной суммы, указывает на частоту работы SPI со Flash.<br>
-Вторая цифра контрольной суммы, указывает на версию Rapid Loader.<br>
 
-Может использоваться для ускорения загрузки любого стандартного <br> 
-проекта на ESP8266, путем копирования в начало первого блока кода:<br>
+where line 'chksum 0x83' means:
+
+* First digit of checksum is flash SPI frequency.
+* Second digit of checksum is version of Rapid Loader.
+
+It can be used to speed up loading of any ESP8266 project
+by inserting to begin of first code block:
+
 ```
-copy /b rapid_loader.bin + 00000.bin new00000.bin    
+mv -f 0x00000.bin 0x00000.bin~orig
+dd if=rapid_loader.bin >0x00000.bin
+dd if=0x00000.bin~orig >>0x00000.bin
 ```
