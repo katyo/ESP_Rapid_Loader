@@ -35,17 +35,18 @@ clean:
 
 # Compilation rules
 define CC_RULES
-$(1).SRC.$(2) := $$(wildcard $$(call SRC_P,$(1)/*,$(2)))
+#$(1).SRC.$(2) := $$(wildcard $$(call SRC_P,$(1)/*,$(2)))
+$(1).SRC.$(2) += $$(filter %.$(2),$$($(1).SRCS))
 $(1).SRC += $$($(1).SRC.$(2))
 
-$(1).OBJ.$(2) := $$(patsubst $$(call SRC_P,$(1)/%,$(2)),$$(call OBJ_P,$(1)/%.$(2)),$$($(1).SRC.$(2)))
+$(1).OBJ.$(2) := $$(patsubst $$(call SRC_P,%,$(2)),$$(call OBJ_P,$(1)/%.$(2)),$$($(1).SRC.$(2)))
 $(1).OBJ += $$($(1).OBJ.$(2))
 
-$(1).DEP.$(2) := $$(patsubst $$(call SRC_P,$(1)/%,$(2)),$$(call DEP_P,$(1)/%.$(2)),$$($(1).SRC.$(2)))
+$(1).DEP.$(2) := $$(patsubst $$(call SRC_P,%,$(2)),$$(call DEP_P,$(1)/%.$(2)),$$($(1).SRC.$(2)))
 $(1).DEP += $$($(1).DEP.$(2))
 
-$$(call OBJ_P,$(1)/%.$(2)): $$(call SRC_P,$(1)/%,$(2))
-	@echo TARGET $(1) CC $$<
+$$(call OBJ_P,$(1)/%.$(2)): $$(call SRC_P,%,$(2))
+	@echo TARGET $(1) CC $(2) $$<
 	$(Q)mkdir -p $$(dir $$@)
 	$(Q)$(CC) -MD -MF $$(call DEP_P,$(1)/$$*.$(2)) -c $$(CFLAGS) $$($(1).CFLAGS) -o $$@ $$<
 
