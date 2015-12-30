@@ -12,11 +12,11 @@ CFLAGS += -Wundef -Wpointer-arith -Werror
 CFLAGS += -Wl,-EL -fno-inline-functions -nostdlib
 CFLAGS += -mlongcalls -mtext-section-literals
 
-loader.CDIRS += app/include
+loader.CDIRS += include
 
 loader.SRCS += \
-  app/loader/loader.c \
-  app/loader/loader_flash_boot.S
+  src/loader.c \
+  src/loader_flash_boot.S
 
 rapid_loader.LIBS += loader
 rapid_loader.LDSCRIPTS += ld/eagle.app.v6.ld
